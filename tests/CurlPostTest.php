@@ -6,20 +6,13 @@
 namespace Cxj;
 
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Exception;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class CurlPostTest extends TestCase
 {
     use PHPMock;
-
-    public function testCurl()
-    {
-        $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
-        $curl_exec->expects($this->once())->willReturn("body");
-
-        $ch = curl_init();
-        $this->assertEquals("body", curl_exec($ch));
-    }
 
     public function testSuccess()
     {
@@ -33,11 +26,29 @@ class CurlPostTest extends TestCase
         $this->assertEquals("<return></return>", $test->sendAndReceive("XML"));
     }
 
-    public function testTime()
+    public function testExecFail()
     {
-        $time = $this->getFunctionMock(__NAMESPACE__, "time");
-        $time->expects($this->once())->willReturn(3);
+        $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
+        $curl_exec->expects($this->once())->willReturn(false);
 
-        $this->assertEquals(3, time());
+        $curl_error = $this->getFunctionMock(__NAMESPACE__, "curl_error");
+        $curl_error->expects($this->once())->willReturn(42);
+
+        $test = new CurlPost("http://example.com");
+        $this->expectException(RuntimeException::class);
+        $test->sendAndReceive("XML");
     }
+
+   public function testHttpStatusFail()
+   {
+       $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
+       $curl_exec->expects($this->once())->willReturn("<return></return>");
+
+       $curl_getinfo = $this->getFunctionMock(__NAMESPACE__, "curl_getinfo");
+       $curl_getinfo->expects($this->once())->willReturn(404);
+
+       $test = new CurlPost("http://example.com");
+       $this->expectException(RuntimeException::class);
+       $test->sendAndReceive("XML");
+   }
 }

@@ -8,6 +8,7 @@ namespace Cxj;
 
 
 use Exception;
+use RuntimeException;
 
 /**
  * Class CurlPost
@@ -53,11 +54,14 @@ class CurlPost implements CommunicateInterface
         // execute post
         $return = curl_exec($ch);
         if (false === $return) {
-            throw new Exception("curl_exec error: " . curl_error($ch));
+            throw new RuntimeException(
+                "curl_exec error: " . curl_error($ch),
+                curl_errno($ch)
+            );
         }
         $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($httpStatus != 200) {
-            throw new Exception("HTTP error: $httpStatus");
+            throw new RuntimeException("HTTP error: $httpStatus");
         }
         curl_close($ch);
 
