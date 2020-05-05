@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ValidateAddressTest extends TestCase
 {
-    public function testSuccess()
+    public function testSuccess(): void
     {
         $result = (new ValidateAddress())->validate("123 Main Street");
         $this->assertInstanceOf(Address::class, $result);

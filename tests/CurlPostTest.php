@@ -14,7 +14,7 @@ class CurlPostTest extends TestCase
 {
     use PHPMock;
 
-    public function testSuccess()
+    public function testSuccess(): void
     {
         $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
         $curl_exec->expects($this->once())->willReturn("<return></return>");
@@ -26,7 +26,7 @@ class CurlPostTest extends TestCase
         $this->assertEquals("<return></return>", $test->sendAndReceive("XML"));
     }
 
-    public function testExecFail()
+    public function testExecFail(): void
     {
         $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
         $curl_exec->expects($this->once())->willReturn(false);
@@ -39,7 +39,7 @@ class CurlPostTest extends TestCase
         $test->sendAndReceive("XML");
     }
 
-   public function testHttpStatusFail()
+   public function testHttpStatusFail(): void
    {
        $curl_exec = $this->getFunctionMock(__NAMESPACE__, "curl_exec");
        $curl_exec->expects($this->once())->willReturn("<return></return>");
