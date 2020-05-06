@@ -9,30 +9,29 @@ namespace Cxj;
 
 class ValidateAddress
 {
-    /**
-     * @var callable
-     */
-    protected $callApi;
+    protected string $url;
+    protected CommunicateInterface $comm;
+    protected Address $output;
+    protected ResponseParserInterface $parser;
 
-    public function validate(
-        string $street1,
-        string $street2 = "",
-        string $city = "",
-        string $state = "",
-        string $zip = "",
-        string $firm = ""
-    ): Address
+    public function __construct(
+        string $url,
+        CommunicateInterface $comm,
+        ResponseParserInterface $parser
+    )
     {
-        $requestAddress = new Address($street1);
-        $requestAddress->setAddress2($street2);
+        $this->url    = $url;
+        $this->comm   = $comm;
+        $this->parser = $parser;
+        //   $this->output = $output;
+    }
 
-        try {
-            $this->callApi = new CurlPost($url);
-        }
-        catch (\Exception $e) {
+    public function validate(Address $input): Address
+    {
+        $response = $this->comm->sendAndReceive($input->getXml());
 
-        }
+        $this->parser->parse($response);
 
-        return $this->callApi->sendAndReceive($requestAddress);
+        return new Address("foo", $this->parser->getValue("Address1"));
     }
 }

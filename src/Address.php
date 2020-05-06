@@ -7,9 +7,20 @@ declare(strict_types=1);
 
 namespace Cxj;
 
+/*
+interface ValueObject
+{
+    public function isNull(): bool;
+    public function isSame(ValueObject $object): bool;
+    public static function fromNative($native);
+    public function toNative();
+}
+*/
+
+use Webmozart\Assert\Assert;
+
 /**
- * Class Address - Value Object for Address Validation Service
- * @package Cxj
+ * Class Address - Parameter Object for Address Validation Service.
  */
 class Address
 {
@@ -23,24 +34,64 @@ class Address
 <Zip5>92688</Zip5>
 <Zip4/>
      */
-    protected string $firmName = "";     // Optional.
-    protected string $address1 = "";     // Always Required!
-    protected string $address2 = "";     // secondary unit, e.g. APT, SUITE
-    protected string $city = "";         // max length 15
-    protected string $state = "";        // Must be length 2
-    protected string $zip5 = "";         // Must be length 5
-    protected string $zip4 = "";         // digits only, must be length 9
-    protected string $urbanization = ""; // max length 28
+    protected string $firmName;     // Optional.
+    protected string $address1;     // Always Required!
+    protected string $address2;     // secondary unit, e.g. APT, SUITE
+    protected string $city;         // max length 15
+    protected string $state;        // Must be length 2
+    protected string $zip5;         // Must be length 5
+    protected string $zip4;         // digits only, must be length 9
+    protected string $urbanization; // max length 28
 
     /**
      * Address constructor.
-     * Relies on all values initialized to empty strings above.
      *
-     * @param string $address1 - the one required property
+     * @param string $firmName
+     * @param string $address1
+     * @param string $address2
+     * @param string $city
+     * @param string $state
+     * @param string $zip5
+     * @param string $zip4
+     * @param string $urbanization
      */
-    public function __construct(string $address1)
+    public function __construct(
+        string $address1,
+        string $address2 = "",
+        string $city = "",
+        string $state = "",
+        string $zip5 = "",
+        string $zip4 = "",
+        string $firmName = "",
+        string $urbanization = ""
+    )
     {
-        $this->setAddress1($address1);
+        Assert::stringNotEmpty($address1, "Address1 is required");
+        Assert::maxLength($address1, 128, "Address1 too long");
+        Assert::lengthBetween($address2, 0, 128, "Address2 too long");
+        Assert::lengthBetween($city, 0, 15, "City too long");
+        if (!empty($state)) {
+            Assert::length($state, 2, "State must be 2 letters");
+            Assert::alpha($state, "State must be 2 letters");
+        }
+        if (!empty($zip5)) {
+            Assert::length($zip5, 5, "ZIP Code must be length 5");
+            Assert::numeric($zip5, "ZIP Code must contains only digits");
+        }
+        if (!empty($zip4)) {
+            Assert::length($zip4, 4, "ZIP+4 must be length 4");
+            Assert::numeric($zip4, "ZIP+4 must contains only digits");
+        }
+        Assert::lengthBetween($urbanization, 0, 28, "Urbanization too long");
+
+        $this->firmName     = $firmName;
+        $this->address1     = $address1;
+        $this->address2     = $address2;
+        $this->city         = $city;
+        $this->state        = $state;
+        $this->zip5         = $zip5;
+        $this->zip4         = $zip4;
+        $this->urbanization = $urbanization;
     }
 
     /**
@@ -60,76 +111,66 @@ XML;
     }
 
     /**
-     * @param string $firmName
+     * @return string
      */
-    public function setFirmName(string $firmName): void
+    public function getFirmName(): string
     {
-        $this->firmName = $firmName;
+        return $this->firmName;
     }
 
     /**
-     * @param string $address1
+     * @return string
      */
-    public function setAddress1(string $address1): void
+    public function getAddress1(): string
     {
-        $this->address1 = $address1;
+        return $this->address1;
     }
 
     /**
-     * @param string $address2
+     * @return string
      */
-    public function setAddress2(string $address2): void
+    public function getAddress2(): string
     {
-        $this->address2 = $address2;
+        return $this->address2;
     }
 
     /**
-     * @param string $city
+     * @return string
      */
-    public function setCity(string $city): void
+    public function getCity(): string
     {
-        if (strlen($city) <= 15) {
-            $this->city = $city;
-        }
+        return $this->city;
     }
 
     /**
-     * @param string $state
+     * @return string
      */
-    public function setState(string $state): void
+    public function getState(): string
     {
-        if (strlen($state) == 2) {
-            $this->state = $state;
-        }
+        return $this->state;
     }
 
     /**
-     * @param string $zip5
+     * @return string
      */
-    public function setZip5(string $zip5): void
+    public function getZip5(): string
     {
-        if (is_numeric($zip5) and (strlen($zip5) == 5)) {
-            $this->zip5 = $zip5;
-        }
+        return $this->zip5;
     }
 
     /**
-     * @param string $zip4
+     * @return string
      */
-    public function setZip4(string $zip4): void
+    public function getZip4(): string
     {
-        if (empty($zip4) or (is_numeric($zip4) and (strlen($zip4) == 4))) {
-            $this->zip4 = $zip4;
-        }
+        return $this->zip4;
     }
 
     /**
-     * @param string $urbanization
+     * @return string
      */
-    public function setUrbanization(string $urbanization): void
+    public function getUrbanization(): string
     {
-        if (strlen($urbanization) <= 28) {
-            $this->urbanization = $urbanization;
-        }
+        return $this->urbanization;
     }
 }

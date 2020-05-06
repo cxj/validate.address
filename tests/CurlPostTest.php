@@ -6,7 +6,6 @@
 namespace Cxj;
 
 use phpmock\phpunit\PHPMock;
-use PHPUnit\Exception;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
