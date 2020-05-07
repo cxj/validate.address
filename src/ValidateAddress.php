@@ -23,7 +23,6 @@ class ValidateAddress
         $this->url    = $url;
         $this->comm   = $comm;
         $this->parser = $parser;
-        //   $this->output = $output;
     }
 
     public function validate(Address $input): Address
@@ -34,4 +33,5 @@ class ValidateAddress
 
         return new Address("foo", $this->parser->getValue("Address1"));
     }
+
 }

@@ -1,44 +1,28 @@
 <?php
 /**
- * @file CurlPost.php
+ * @file CurlGet.php
  * Replace with one line description.
  */
 
 namespace Cxj;
 
-
-use Exception;
 use RuntimeException;
 
-/**
- * Class CurlPost
- * Provides an HTTP POST connection to USPS API address "Verify" service.
- * @package Cxj
- */
-class CurlPost extends AbstractCommunicate
+class CurlGet extends AbstractCommunicate
 {
     /**
-     * POST the XML string to the USPS server, and return the reply string.
+     * Send the XML string to the USPS server via HTTP GET, and return reply.
      *
      * @param string $address
      *
      * @return string
-     * @throws Exception
      */
     public function sendAndReceive(string $address): string
     {
         $xml        = $this->buildXmlRequest($address);
-        $fields     = [
-            "API" => "Verify",
-            "XML" => $xml,
-        ];
-        $postFields = http_build_query($fields);
-        $ch         = curl_init($this->url);
+        $encodedXml = urlencode($xml);
+        $ch         = curl_init($this->url . "?API=Verify&XML=" . $encodedXml);
 
-        // set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_POST, count($fields));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $return = curl_exec($ch);
