@@ -44,6 +44,6 @@ class StreamPost extends AbstractCommunicate
             throw new \RuntimeException("file_get_contents returned false");
         }
 
-
+        return $return;
     }
 }
