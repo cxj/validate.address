@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ValidateAddressTest extends TestCase
 {
-    protected string $url;
     protected ValidateAddress $validator;
-    protected Address $output;
 
     protected string $goodXmlOutput = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -31,25 +29,37 @@ XML;
 
     public function setUp(): void
     {
-        $this->url       = "http://example.com";
-        $comm            = $this->getMockBuilder(CurlPost::class)
-                                ->disableOriginalConstructor()
-                                ->getMock();
-        $parser          = $this->getMockBuilder(DomParser::class)
-                                ->disableOriginalConstructor()
-                                ->getMock();
+        $comm   = $this->getMockBuilder(CurlPost::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $parser = $this->getMockBuilder(DomParser::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
 
-        $this->validator = new ValidateAddress(
-            $this->url,
-            $comm,
-            $parser
-        );
+        $map = [
+            ["Address1", "This is Address1"],
+            ["Address2", "Suite 222"],
+            ["City", "Anytown"],
+            ["State", "AE"],
+            ["Zip5", "12345"],
+            ["Zip4", "7890"],
+            ["FirmName", "Acme Chemicals and Anvils"],
+            ["Urbanization", "Puerto Rico Only"],
+        ];
+        $parser->expects($this->any())
+               ->method("getValue")
+               ->will($this->returnValueMap($map));
+
+
+        /** @var CommunicateInterface $comm */
+        /** @var ResponseParserInterface $parser */
+        $this->validator = new ValidateAddress($comm, $parser);
     }
 
     public function testSuccess(): void
     {
-        $address = new Address("123 Main Street");  // TODO
-        $result = $this->validator->validate($address);
+        $address = new Address("123 Main Street");
+        $result  = $this->validator->validate($address);
         $this->assertInstanceOf(Address::class, $result);
     }
 }
