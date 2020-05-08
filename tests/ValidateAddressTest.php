@@ -36,7 +36,16 @@ XML;
                        ->disableOriginalConstructor()
                        ->getMock();
 
+        $comm->expects($this->any())
+             ->method("sendAndReceive")
+             ->willReturn($this->goodXmlOutput);
+
+        $parser->expects($this->any())
+               ->method("parse")
+               ->willReturn(true);
+
         $map = [
+            ["Error", ""],
             ["Address1", "This is Address1"],
             ["Address2", "Suite 222"],
             ["City", "Anytown"],
