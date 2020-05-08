@@ -1,7 +1,6 @@
 # Validate Address
 
-The United States Postal Service (USPS) [Address Standardization Web Tool]([1]
-https://www.usps.com/business/web-tools-apis/address-information-api.htm#_Toc34052588)
+The United States Postal Service (USPS) [Address Standardization Web Tool]
 corrects errors in street addresses, including abbreviations and missing
 information, and supplies ZIP Codes and ZIP Codes + 4.
 
@@ -29,6 +28,7 @@ available as `composer`, and [PHPUnit][] to be available as `phpunit`.
 This package attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][].  If
 you notice compliance oversights, please send a patch via pull request.
 
+[Address Standardization Web Tool]: https://www.usps.com/business/web-tools-apis/address-information-api.htm#_Toc34052588
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
