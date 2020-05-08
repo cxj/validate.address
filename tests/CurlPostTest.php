@@ -17,7 +17,7 @@ class CurlPostTest extends TestCase
 
     public function setUp(): void
     {
-        $this->test = new CurlPost("http://example.com", "username");
+        $this->test = new CurlPost("username");
     }
 
     public function testSuccess(): void

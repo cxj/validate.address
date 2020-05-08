@@ -66,7 +66,7 @@ class Address
         string $urbanization = ""
     )
     {
-        Assert::stringNotEmpty($address1, "Address1 is required");
+        // Assert::stringNotEmpty($address1, "Address1 is required");
         Assert::maxLength($address1, 128, "Address1 too long");
         Assert::lengthBetween($address2, 0, 128, "Address2 too long");
         Assert::lengthBetween($city, 0, 15, "City too long");

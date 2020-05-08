@@ -16,7 +16,7 @@ class StreamPostTest extends TestCase
 
     public function setUp(): void
     {
-        $this->post = new StreamPost("http://example.com", "username");
+        $this->post = new StreamPost("username");
     }
 
     public function testSuccess(): void

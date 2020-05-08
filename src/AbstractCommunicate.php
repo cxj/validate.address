@@ -9,12 +9,13 @@ namespace Cxj;
 
 abstract class AbstractCommunicate implements CommunicateInterface
 {
+    const URL = "http://production.shippingapis.com/ShippingAPI.dll";
     protected string $user;
     protected string $url;
 
-    public function __construct(string $url, string $user)
+    public function __construct(string $user)
     {
-        $this->url  = $url;
+        $this->url  = self::URL;
         $this->user = $user;
     }
 
