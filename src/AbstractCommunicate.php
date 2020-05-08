@@ -23,7 +23,7 @@ abstract class AbstractCommunicate implements CommunicateInterface
     protected function buildXmlRequest(string $xmlAddress): string
     {
         return <<<XML
-<AddressValidateRequest USERID={$this->user}">
+<AddressValidateRequest USERID="{$this->user}">
     <Address ID="0">
         $xmlAddress
     </Address>
