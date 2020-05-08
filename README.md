@@ -21,6 +21,27 @@ available version of PHP as a matter of principle.
 
 ## Example Usage
 
+```php
+8039 Beach Blvd, Buena Park, CA 90620
+<?php
+$address = new Address(
+    "8039 Beach Blvd",
+    "",
+    "Buena Park",
+    "CA",
+    "90620"
+);
+
+$user = YOUR_USER_NAME; // Obtained from the USPS website
+$validate = new ValidateAddress(new CurlPost($user), new DomParser());
+$response = $validate->validate($address);
+
+echo sprintf("Corrected ZIP+4 Code: %s-%s\n",
+    $response->getZip5(),
+    $response->getZip4()
+);
+```
+
 The main API class for usage is `ValidateAddress`, the address to be validated
 or normalized is passed as a Parameter Object or Value Object to the validation
 method itself.  The constructor requires has two other dependencies, defined
