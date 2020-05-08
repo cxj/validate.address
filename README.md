@@ -19,6 +19,22 @@ Alternatively, [download a release][], or clone this repository, then map the
 This package requires PHP 7.4 or later. We recommend using the latest
 available version of PHP as a matter of principle.
 
+## Example Usage
+
+The main API class for usage is `ValidateAddress`, the address to be validated
+or normalized is passed as a Parameter Object or Value Object to the validation
+method itself.  The constructor requires has two other dependencies, defined
+by the `CommunicationInteface` (which handles the connection and exchange
+with the USPS server), and the `ResponseParserInterface` (which handles
+decoding the XML response from the server).
+
+Three implementations of the `CommunicationInterface` are provided, using
+the PHP Curl extension to send the address request via either HTTP POST or GET,
+and a stream socket.
+
+Two implementations of the `ResponseParserInterface` are provided.  One
+requires the PHP DOM extension, and the other requires the PHP XML extension.
+
 ## Quality
 
 To run the unit tests at the command line, issue `composer install` and then
