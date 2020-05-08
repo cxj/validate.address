@@ -22,7 +22,6 @@ available version of PHP as a matter of principle.
 ## Example Usage
 
 ```php
-8039 Beach Blvd, Buena Park, CA 90620
 <?php
 $address = new Address(
     "8039 Beach Blvd",
@@ -32,7 +31,9 @@ $address = new Address(
     "90620"
 );
 
-$user = YOUR_USER_NAME; // Obtained from the USPS website
+$user = YOUR_USER_NAME; // Obtained from the USPS website:
+// https://www.usps.com/business/web-tools-apis/#developers
+
 $validate = new ValidateAddress(new CurlPost($user), new DomParser());
 $response = $validate->validate($address);
 
