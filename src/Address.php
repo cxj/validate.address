@@ -43,19 +43,66 @@ class Address
     protected string $zip4;         // digits only, must be length 9
     protected string $urbanization; // max length 28
 
+    // We don't remove empty constructor because it still needs to be private.
+    private function __construct() { }
+
     /**
-     * Address constructor.
+     * Address constructor from JSON objects.
      *
-     * @param string $firmName
+     * @param string $json
+     *
+     * @return Address
+     */
+    public static function fromJson(string $json): Address
+    {
+        if (!extension_loaded("json")) {
+            throw new \RuntimeException("PHP's ext-json is not installed");
+        }
+
+        $params = json_decode($json, true, JSON_THROW_ON_ERROR);
+
+        return Address::fromArray($params);
+    }
+
+    /**
+     * Address constructor from associative array.
+     *
+     * @param array $params
+     *
+     * @return Address
+     */
+    public static function fromArray(array $params): Address
+    {
+        $normal = array_change_key_case($params, CASE_LOWER);
+
+        return Address::fromVars(
+            $normal["address1"] ?? "",
+            $normal["address2"] ?? "",
+            $normal["city"] ?? "",
+            $normal["state"] ?? "",
+            $normal["zip5"] ?? "",
+            $normal["zip4"] ?? "",
+            // Note lowercase "n" due to case change in key name below:
+            $normal["firmname"] ?? "",
+            $normal["urbanization"] ?? ""
+        );
+    }
+
+    /**
+     * Address constructor from individual variables.
+     *
      * @param string $address1
      * @param string $address2
      * @param string $city
      * @param string $state
      * @param string $zip5
      * @param string $zip4
+     * @param string $firmName
      * @param string $urbanization
+     *
+     * @return Address
      */
-    public function __construct(
+    public static function fromVars(
         string $address1,
         string $address2 = "",
         string $city = "",
@@ -64,7 +111,7 @@ class Address
         string $zip4 = "",
         string $firmName = "",
         string $urbanization = ""
-    )
+    ): Address
     {
         // Assert::stringNotEmpty($address1, "Address1 is required");
         Assert::maxLength($address1, 128, "Address1 too long");
@@ -84,14 +131,18 @@ class Address
         }
         Assert::lengthBetween($urbanization, 0, 28, "Urbanization too long");
 
-        $this->firmName     = $firmName;
-        $this->address1     = $address1;
-        $this->address2     = $address2;
-        $this->city         = $city;
-        $this->state        = $state;
-        $this->zip5         = $zip5;
-        $this->zip4         = $zip4;
-        $this->urbanization = $urbanization;
+        $address = new Address();
+
+        $address->firmName     = $firmName;
+        $address->address1     = $address1;
+        $address->address2     = $address2;
+        $address->city         = $city;
+        $address->state        = $state;
+        $address->zip5         = $zip5;
+        $address->zip4         = $zip4;
+        $address->urbanization = $urbanization;
+
+        return $address;
     }
 
     /**

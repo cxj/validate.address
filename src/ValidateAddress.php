@@ -42,7 +42,7 @@ class ValidateAddress
             );
         }
 
-        return new Address(
+        return Address::fromVars(
             $this->parser->getValue("Address1"),
             $this->parser->getValue("Address2"),
             $this->parser->getValue("City"),

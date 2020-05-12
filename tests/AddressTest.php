@@ -15,7 +15,7 @@ class AddressTest extends TestCase
     public function testAddressXml(): void
     {
         $address1 = self::ADDRESS_1;
-        $address  = new Address($address1);
+        $address  = Address::fromVars($address1);
         $xml      = <<< XML
 <FirmName></FirmName>
 <Address1>$address1</Address1>
@@ -32,74 +32,73 @@ XML;
     public function testAddressMaxAddress2Length(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, $this->genString(129));
+        $this->tryNew(self::ADDRESS_1, $this->genString(129));
     }
 
     public function testAddressMaxCityLength(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", $this->genString(16));
+        $this->tryNew(self::ADDRESS_1, "", $this->genString(16));
     }
 
     public function testAddressStateTooShort(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "M");
+        $this->tryNew(self::ADDRESS_1, "", "Anytown", "M");
     }
 
     public function testAddressStateTooLong(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "ABC");
+        $this->tryNew(self::ADDRESS_1, "", "Anytown", "ABC");
     }
 
     public function testAddressStateNotAlpha(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "42");
+        $this->tryNew(self::ADDRESS_1, "", "Anytown", "42");
     }
 
-    public function testAddressZip5Ok(): void {
-        $address = new Address(self::ADDRESS_1, "", "City", "", "12345");
+    public function testAddressZip5ok(): void {
+        $address = Address::fromVars(self::ADDRESS_1, "", "City", "AE", "12345");
         $this->assertInstanceOf(Address::class, $address);
     }
 
     public function testAddressZip5TooShort(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "AE", "1234");
+        $this->tryNew(self::ADDRESS_1, "", "Anytown", "AE", "1234");
     }
 
     public function testAddressZip5TooLong(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "AE", "123456789");
+        $this->tryNew(self::ADDRESS_1, "", "Anytown", "AE", "123456789");
     }
 
     public function testAddressZip5Numeric(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "AE", "ABCD5");
+        Address::fromVars(self::ADDRESS_1, "", "Anytown", "AE", "ABCD5");
     }
 
 
     public function testAddressZip4TooShort(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "AE", "", "123");
+        Address::fromVars(self::ADDRESS_1, "", "Anytown", "AE", "", "123");
     }
 
     public function testAddressZip4TooLong(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Address(self::ADDRESS_1, "", "Anytown", "AE", "", "123456789");
+        Address::fromVars(self::ADDRESS_1, "", "Anytown", "AE", "", "123456789");
     }
 
     public function testAddressZip4Numeric(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->tryNew("", "Anytown", "AE", "", "ABC4");
-        // new Address(self::ADDRESS_1, "", "Anytown", "AE", "", "ABC4");
     }
 
 
@@ -115,7 +114,7 @@ XML;
         $firmName = "";
 
         try {
-            $address = new Address(
+            $address = Address::fromVars(
                 self::ADDRESS_1,
                 $address2,
                 $city,

@@ -67,7 +67,7 @@ XML;
 
     public function testSuccess(): void
     {
-        $address = new Address("123 Main Street");
+        $address = Address::fromVars("123 Main Street");
         $result  = $this->validator->validate($address);
         $this->assertInstanceOf(Address::class, $result);
     }
