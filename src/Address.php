@@ -67,7 +67,7 @@ class Address
     /**
      * Address constructor from associative array.
      *
-     * @param array $params
+     * @param array<string> $params
      *
      * @return Address
      */
