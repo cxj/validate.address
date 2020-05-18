@@ -10,6 +10,9 @@ use RuntimeException;
 
 class ValidateAddress
 {
+    const PARSE_ERROR = 1;
+    const DATA_ERROR  = 2;
+
     protected CommunicateInterface $comm;
     protected ResponseParserInterface $parser;
 
@@ -33,12 +36,13 @@ class ValidateAddress
         $response = $this->comm->sendAndReceive($input->getXml());
 
         if (false === $this->parser->parse($response)) {
-            throw new RuntimeException("loadXML() failed");
+            throw new RuntimeException("loadXML() failed", self::PARSE_ERROR);
         }
 
         if (!empty($this->parser->getValue("Error"))) {
             throw new RuntimeException(
-                "USPS returned: " . $this->parser->getValue("Description")
+                "USPS returned: " . $this->parser->getValue("Description"),
+                self::DATA_ERROR
             );
         }
 
