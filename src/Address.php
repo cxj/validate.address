@@ -24,16 +24,6 @@ use Webmozart\Assert\Assert;
  */
 class Address
 {
-    /*
-<FirmName>XYZ Corp.</FirmName>
-<Address1>SUITE K</Address1>
-<Address2>29851 Aventura</Address2>
-<City/>
-<State>CA</State>
-<Urbanization>PuertoRicoOnly</Urbanization>
-<Zip5>92688</Zip5>
-<Zip4/>
-     */
     protected string $firmName;     // Optional.
     protected string $address1;     // Always Required!
     protected string $address2;     // secondary unit, e.g. APT, SUITE

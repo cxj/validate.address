@@ -28,10 +28,10 @@ class ValidateAddress
     /**
      * @param Address $input
      *
-     * @return Address
+     * @return Result
      * @throws RuntimeException
      */
-    public function validate(Address $input): Address
+    public function validate(Address $input): Result
     {
         $response = $this->comm->sendAndReceive($input->getXml());
 
@@ -46,15 +46,19 @@ class ValidateAddress
             );
         }
 
-        return Address::fromVars(
-            $this->parser->getValue("Address1"),
-            $this->parser->getValue("Address2"),
-            $this->parser->getValue("City"),
-            $this->parser->getValue("State"),
-            $this->parser->getValue("Zip5"),
-            $this->parser->getValue("Zip4"),
-            $this->parser->getValue("FirmName"),
-            $this->parser->getValue("Urbanization")
+        return new Result(
+            Address::fromVars(
+                $this->parser->getValue("Address1"),
+                $this->parser->getValue("Address2"),
+                $this->parser->getValue("City"),
+                $this->parser->getValue("State"),
+                $this->parser->getValue("Zip5"),
+                $this->parser->getValue("Zip4"),
+                $this->parser->getValue("FirmName"),
+                $this->parser->getValue("Urbanization"),
+            ),
+            $this->parser->getValue("ReturnText"),
+            $this->parser->getValue("Description")
         );
     }
 }

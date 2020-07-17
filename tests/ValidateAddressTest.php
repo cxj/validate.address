@@ -26,7 +26,6 @@ class ValidateAddressTest extends TestCase
 </AddressValidateResponse>
 XML;
 
-
     public function setUp(): void
     {
         $comm   = $this->getMockBuilder(CurlPost::class)
@@ -69,6 +68,6 @@ XML;
     {
         $address = Address::fromVars("123 Main Street");
         $result  = $this->validator->validate($address);
-        $this->assertInstanceOf(Address::class, $result);
+        $this->assertInstanceOf(Address::class, $result->getAddress());
     }
 }
