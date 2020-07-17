@@ -38,8 +38,8 @@ $validate = new ValidateAddress(new CurlPost($user), new DomParser());
 $response = $validate->validate($address);
 
 echo sprintf("Corrected ZIP+4 Code: %s-%s\n",
-    $response->getZip5(),
-    $response->getZip4()
+    $response->getAddress()->getZip5(),
+    $response->getAddress()->getZip4()
 );
 ```
 
