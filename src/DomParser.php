@@ -22,7 +22,7 @@ class DomParser implements ResponseParserInterface
      */
     public function parse(string $xmlDoc): bool
     {
-        if ($this->dom->loadXML($xmlDoc) === false) {
+        if ($this->dom->loadXML($xmlDoc, LIBXML_NOERROR) === false) {
             return false;
         }
 
