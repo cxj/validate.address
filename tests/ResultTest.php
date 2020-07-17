@@ -21,7 +21,12 @@ class ResultTest extends TestCase
         $address1      = self::ADDRESS_1;
         $this->address = Address::fromVars($address1);
         $this->result  =
-            new Result($this->address, self::RETURN_TEXT, self::DESCRIPTION);
+            new Result(
+                $this->address,
+                self::RETURN_TEXT,
+                self::DESCRIPTION,
+                true
+            );
     }
 
     public function testConstruct(): void
@@ -60,5 +65,10 @@ class ResultTest extends TestCase
             self::DESCRIPTION,
             $this->result->getDescription()
         );
+    }
+
+    public function testHasError(): void
+    {
+        $this->assertTrue($this->result->hasError());
     }
 }
