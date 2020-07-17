@@ -53,6 +53,8 @@ XML;
             ["Zip4", "7890"],
             ["FirmName", "Acme Chemicals and Anvils"],
             ["Urbanization", "Puerto Rico Only"],
+            ["ReturnText", "return text"],
+            ["Description", "description"],
         ];
         $parser->expects($this->any())
                ->method("getValue")

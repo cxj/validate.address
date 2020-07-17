@@ -39,13 +39,6 @@ class ValidateAddress
             throw new RuntimeException("loadXML() failed", self::PARSE_ERROR);
         }
 
-        if (!empty($this->parser->getValue("Error"))) {
-            throw new RuntimeException(
-                "USPS returned: " . $this->parser->getValue("Description"),
-                self::DATA_ERROR
-            );
-        }
-
         return new Result(
             Address::fromVars(
                 $this->parser->getValue("Address1"),
@@ -58,7 +51,8 @@ class ValidateAddress
                 $this->parser->getValue("Urbanization"),
             ),
             $this->parser->getValue("ReturnText"),
-            $this->parser->getValue("Description")
+            $this->parser->getValue("Description"),
+            empty($this->parser->getValue("Error"))
         );
     }
 }
