@@ -16,16 +16,19 @@ class Result
     protected Address $address;
     protected string $returnText;
     protected string $description;
+    protected bool $error;
 
     public function __construct(
         Address $address,
         string $returnText = '',
-        string $description = ''
+        string $description = '',
+        bool $hasError = false
     )
     {
         $this->address     = $address;
         $this->returnText  = $returnText;
         $this->description = $description;
+        $this->error       = $hasError;
     }
 
     /**
@@ -50,5 +53,13 @@ class Result
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasError(): bool
+    {
+        return $this->error;
     }
 }
