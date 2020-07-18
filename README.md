@@ -12,7 +12,7 @@ This package is installable and PSR-4 autoloadable via Composer as
 [cxj/validate.address][].
 
 Alternatively, [download a release][], or clone this repository, then map the
-`Cxj\` namespace to the package `src/` directory.
+`Cxj\ValidateAddress\` namespace to the package `src/` directory.
 
 ## Dependencies
 

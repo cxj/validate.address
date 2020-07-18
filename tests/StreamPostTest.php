@@ -3,7 +3,7 @@
  * @file StreamPostTest.php
  * Replace with one line description.
  */
-namespace Cxj;
+namespace Cxj\ValidateAddress;
 
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;

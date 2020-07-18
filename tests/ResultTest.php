@@ -3,7 +3,7 @@
  * @file ResultTest.php
  * Replace with one line description.
  */
-namespace Cxj;
+namespace Cxj\ValidateAddress;
 
 use PHPUnit\Framework\TestCase;
 

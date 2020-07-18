@@ -25,13 +25,13 @@
 
     "autoload": {
         "psr-4": {
-            "Cxj\\": "src/"
+            "Cxj\\ValidateAddress\\": "src/"
         }
     },
 
     "autoload-dev": {
         "psr-4": {
-            "Cxj\\": "tests/"
+            "Cxj\\ValidateAddress\\": "tests/"
         }
     }
 }
